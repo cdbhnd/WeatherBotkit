@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+
+<head>
+
+
+</head>
+
+<body>
+  <div id="embedded_messenger">
+    <header id="message_header" onclick="Botkit.toggle()">Chat</header>
+    <iframe style="height:500px; width:500px" id="botkit_client" src="http://localhost:3000/chat.html"></iframe>
+  </div>
+  <script src="http://localhost:3000/embed.js"></script>
+  <script>
+    var options = {};
+    Botkit.boot(options);
+  </script>
+  <link rel="stylesheet" href="http://localhost:3000/embed.css" />
+</body>
+
+</html>
