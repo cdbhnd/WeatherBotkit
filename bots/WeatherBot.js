@@ -53,27 +53,22 @@ WeatherBot.prototype.createHandler = function () {
 
             addVerifyThread(convo, bot);
 
-            addAskCityThread(convo);
-            addFindCityThread(convo);
+            addAskCityThread(convo, bot);
+            addFindCityThread(convo, bot);
 
-            addAskTimeThread(convo);
+            addAskTimeThread(convo, bot);
 
-            addUnknownCityThread(convo);
-            addSummaryThread(convo);
-            addForecastThread(convo);
+            addUnknownCityThread(convo, bot);
+            addSummaryThread(convo, bot);
+            addForecastThread(convo, bot);
 
-            initializeConversation(cityText, timeText, bot, convo);
+            var thread = getInitialThread(convo);
+
+            convo.gotoThread(thread);
         });
     };
 
     return handler;
-}
-
-function initializeConversation(cityText, timeText, bot, convo) {
-
-    var thread = getInitialThread(convo);
-
-    convo.gotoThread(thread);
 }
 
 function addVerifyThread(convo, bot) {
@@ -139,6 +134,10 @@ function addAskTimeThread(convo) {
         convo.gotoThread(nextThread);
 
     }, {}, 'ask_time');
+}
+
+function addVerifyTimeThread(convo) {
+
 }
 
 function addSummaryThread(convo) {
