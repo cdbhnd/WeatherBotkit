@@ -1,9 +1,8 @@
 import { State } from '../../../framework/StateBase';
 import { Conversation } from '../../../framework/ConversationBase';
-import * as gateway from '../gateway/WeatherGateway'
-import * as formatter from '../formatters/WeatherTextFormatter'
+import * as gateway from '../gateway/YoutubeGateway'
 
-export class WeatherForecastState extends State {
+export class YoutubeSearchState extends State {
 
     private propertyQuery: string;
     private propertyResult: string;
@@ -22,24 +21,20 @@ export class WeatherForecastState extends State {
 
         convo.beforeThread(that.name, function (convo, next) {
 
-            let period = formatter.formatPeriod(that.conversation.payload.forecastPeriodText);
-
-            gateway.getForecast(that.conversation.payload[that.propertyQuery], period)
-                .then(function (result) {
+            gateway.search(that.conversation.payload[that.propertyQuery])
+                .then(function(result){
                     that.conversation.payload[that.propertyResult] = result;
                     next();
                 })
-                .catch(function (err) {
-                    that.conversation.payload.error = err;
+                .catch(function(err){
+                    that.conversation.payload.error = 'Ooops'
                     convo.gotoThread(that.conversation.getNext());
-                });
+                })
         });
-
-        var outputText = formatter.formatOutput(that.conversation.payload.outputFormat);
 
         convo.addMessage(
             {
-                text: outputText,
+                text: 'yep I found you some results here',
                 action: function () {
                     convo.gotoThread(that.conversation.getNext());
                 }

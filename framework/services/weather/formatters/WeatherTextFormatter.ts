@@ -23,7 +23,6 @@ export function formatOutput(format) {
 
 export function formatPeriod(periodText) {
     
-    
     if (new RegExp(/^(Today|today|now|immediately|Immediately|right now|Now)/i).test(periodText)) {
         return 'today';
     }

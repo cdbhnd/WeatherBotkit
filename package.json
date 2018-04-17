@@ -20,7 +20,9 @@
     "request": "^2.79.0",
     "wordfilter": "^0.2.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/utf8": "^2.1.6"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/howdyai/botkit-starter-web.git"
