@@ -1,6 +1,6 @@
-var request = require('request-promise');
-var $q = require('q');
-var utf8 = require('utf8');
+import * as request from 'request-promise';
+import * as Q from 'q';
+import * as utf8 from 'utf8';
 
 export function geocode(address) {
 
@@ -15,7 +15,7 @@ export function geocode(address) {
     return request(opts)
         .then(function (response) {
             if (response.status != 'OK') {
-                return $q.reject(response);
+                return Q.reject(response);
             } 
             return {
                 address: response.results[0].formatted_address,

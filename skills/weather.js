@@ -1,44 +1,68 @@
-var googleGeocoder = require('../services/googleGeocoder');
-var weatherService = require('../services/weatherService');
-var WeatherBot = require('../bots/WeatherBot');
+var WeatherConversation = require('../framework/dist/services/weather/WeatherConversation.js').WeatherConversation;
+var ForecastOutputFormat = require('../framework/dist/services/weather/WeatherConversation.js').ForecastOutputFormat;
 
 module.exports = function (controller) {
 
-    var hearsPatternsCityOnly = [
+    var hearsPatternsLocationOnly = [
         'How is weather in (.*)',
         'how is weather in (.*)',
         'Weather in (.*)',
         'weather in (.*)',
-        'Weather prognosis today in (.*)',
-        'weather prognosis today in (.*)',
+        'Can you tell me what the weather is like in (.*) ?'
     ];
 
-    var hearsPatternsTimeAndCity = [
-        'How is weather (.*) in (.*)',
-        'how is weather (.*) in (.*)',
+    var hearsPatternsTimeAndLocation = [
+        'How is the weather (.*) in (.*)',
+        'how is the weather (.*) in (.*)',
         'Weather prognosis for (.*) in (.*)',
         'weather prognosis for (.*) in (.*)',
     ];
 
-    var bot1 = new WeatherBot('PARAMETERLESS');
-    var bot2 = new WeatherBot('CITY');
-    var bot3 = new WeatherBot('TIMECITY');
+    var hearsRaining = [
+        'Do I have to count on rain?',
+        'Will it rain?'
+    ]
 
     controller.hears(
         [new RegExp(/^(prognoza|vreme|weather)/i)],
         'message_received',
-        bot1.createHandler());
+        function (bot, message) {
+
+            var weatherConversation = new WeatherConversation(false);
+            weatherConversation.start(bot, message);
+        });
 
     controller.hears(
-        hearsPatternsCityOnly,
+        hearsPatternsLocationOnly,
         'message_received',
-        bot2.createHandler());
+        function (bot, message) {
+
+            var weatherConversation = new WeatherConversation(true);
+            weatherConversation.payload.locationText = message.match[1];
+            weatherConversation.payload.forecastPeriodText = 'today';
+
+            weatherConversation.start(bot, message);
+        });
 
     controller.hears(
-        hearsPatternsTimeAndCity,
+        hearsPatternsTimeAndLocation,
         'message_received',
-        bot3.createHandler());
+        function (bot, message) {
 
+            var weatherConversation = new WeatherConversation(true);
+            weatherConversation.payload.forecastPeriodText = message.match[1];
+            weatherConversation.payload.locationText = message.match[2];
 
+            weatherConversation.start(bot, message);
+        });
+
+    controller.hears(
+        hearsRaining,
+        'message_received',
+        function (bot, message) {
+
+            var weatherConversation = new WeatherConversation(true, ForecastOutputFormat.Raining);
+            weatherConversation.start(bot, message);
+        });
 };
 
