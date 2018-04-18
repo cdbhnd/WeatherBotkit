@@ -20,6 +20,7 @@ class WeatherForecastState extends StateBase_1.State {
             })
                 .catch(function (err) {
                 that.conversation.payload.error = err;
+                convo.gotoThread(that.conversation.getNext());
             });
         });
         var outputText = formatter.formatOutput(that.conversation.payload.outputFormat);

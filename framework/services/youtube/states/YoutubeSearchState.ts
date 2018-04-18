@@ -21,7 +21,7 @@ export class YoutubeSearchState extends State {
 
         convo.beforeThread(that.name, function (convo, next) {
 
-            gateway.search(that.conversation.payload[that.propertyQuery])
+            gateway.searchOne(that.conversation.payload[that.propertyQuery])
                 .then(function(result){
                     that.conversation.payload[that.propertyResult] = result;
                     next();
@@ -34,7 +34,7 @@ export class YoutubeSearchState extends State {
 
         convo.addMessage(
             {
-                text: 'yep I found you some results here',
+                text: '{{vars.payload.result.title}} {{vars.payload.result.url}}',
                 action: function () {
                     convo.gotoThread(that.conversation.getNext());
                 }

@@ -11,20 +11,29 @@ class YoutubeSearchState extends StateBase_1.State {
     configure(convo, bot) {
         var that = this;
         convo.beforeThread(that.name, function (convo, next) {
-            gateway.search(that.conversation.payload[that.propertyQuery])
+            gateway.searchOne(that.conversation.payload[that.propertyQuery])
                 .then(function (result) {
                 that.conversation.payload[that.propertyResult] = result;
+                next();
             })
                 .catch(function (err) {
-                console.log(err);
                 that.conversation.payload.error = 'Ooops';
+                convo.gotoThread(that.conversation.getNext());
             });
         });
         convo.addMessage({
-            text: 'yep I found you some results here',
+            text: 'Here you go {{vars.payload.result.title}} {{vars.payload.result.url}}',
             action: function () {
                 convo.gotoThread(that.conversation.getNext());
-            }
+            },
+            files: [
+                {
+                    url: function () {
+                        return that.conversation.payload.result.url;
+                    },
+                    image: false
+                }
+            ]
         }, that.name);
     }
 }
