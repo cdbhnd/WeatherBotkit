@@ -22,18 +22,10 @@ class YoutubeSearchState extends StateBase_1.State {
             });
         });
         convo.addMessage({
-            text: 'Here you go {{vars.payload.result.title}} {{vars.payload.result.url}}',
+            text: '{{vars.payload.result.title}} {{vars.payload.result.url}}',
             action: function () {
                 convo.gotoThread(that.conversation.getNext());
-            },
-            files: [
-                {
-                    url: function () {
-                        return that.conversation.payload.result.url;
-                    },
-                    image: false
-                }
-            ]
+            }
         }, that.name);
     }
 }
